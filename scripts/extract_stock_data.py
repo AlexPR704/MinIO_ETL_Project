@@ -1,7 +1,15 @@
+import os
 import yfinance as yf
 import pandas as pd
 from minio import Minio
-import os
+
+# Load credentials from environment variables
+minio_client = Minio(
+    "localhost:9000",
+    access_key=os.getenv("MINIO_ACCESS_KEY"),  
+    secret_key=os.getenv("MINIO_SECRET_KEY"),  
+    secure=False
+)
 
 # Download stock data
 data = yf.download("AAPL", period="1d", interval="1h")
@@ -11,24 +19,14 @@ local_file_path = "stock_data.csv"
 
 # Save data to CSV
 data.to_csv(local_file_path)
-
 print(f"Stock data saved locally as {local_file_path}")
-
-# MinIO Configuration
-minio_client = Minio(
-    "localhost:9000",  # MinIO address
-    access_key="user",  # Change to your MinIO username
-    secret_key="password",  # Change to your MinIO password
-    secure=False  # MinIO runs on HTTP, so this should be False
-)
 
 # Define MinIO bucket and object name
 bucket_name = "stock-data-bucket"
 object_name = "stock_data.csv"
 
 # Create bucket if it doesn't exist
-found = minio_client.bucket_exists(bucket_name)
-if not found:
+if not minio_client.bucket_exists(bucket_name):
     minio_client.make_bucket(bucket_name)
     print(f"Bucket '{bucket_name}' created")
 else:
