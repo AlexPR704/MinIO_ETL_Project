@@ -1,0 +1,38 @@
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Virtual environments
+venv/
+env/
+
+# Environment variables
+.env
+
+# Logs and temporary files
+*.log
+logs/
+
+# Airflow runtime files
+airflow/logs/
+airflow/airflow.db
+airflow/*.pid
+
+# VSCode / IDE config
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+
+# Compiled binaries (Windows)
+*.exe
+*.dll
+
+# Distribution files
+*.tar.gz
+*.zip
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
